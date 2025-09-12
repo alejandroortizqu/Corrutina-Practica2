@@ -16,6 +16,7 @@ class MainViewModel: ViewModel() {
     private var oneCount by mutableStateOf(false)
 
     fun fetchData(){
+
         val job = viewModelScope.launch {
 
             for(i in 1..5){
@@ -24,8 +25,10 @@ class MainViewModel: ViewModel() {
             }
             oneCount = true
         }
+
         if(oneCount){
             job.cancel()
+            oneCount = false
         }
         viewModelScope.launch {
             delay(5000)
