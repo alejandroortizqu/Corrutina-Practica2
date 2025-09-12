@@ -44,7 +44,7 @@ fun CoroutineApp(mainViewModel: MainViewModel, modifier : Modifier = Modifier){
             Text(text = "Cambio de color")
         }
         Spacer(modifier = modifier.height(30.dp))
-        Text (text = "${mainViewModel.countTime}")
+        Text (text = "${mainViewModel.countTime} [s]")
         Text(text = mainViewModel.resultState)
         Spacer(modifier = modifier.height(30.dp))
         Button(onClick = {
