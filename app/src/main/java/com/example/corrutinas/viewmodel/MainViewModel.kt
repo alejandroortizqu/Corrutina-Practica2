@@ -13,12 +13,19 @@ class MainViewModel: ViewModel() {
     var countTime by mutableStateOf(0)
     private set
 
+    private var oneCount by mutableStateOf(false)
+
     fun fetchData(){
-        viewModelScope.launch {
+        val job = viewModelScope.launch {
+
             for(i in 1..5){
                 delay(1000)
                 countTime = i
             }
+            oneCount = true
+        }
+        if(oneCount){
+            job.cancel()
         }
         viewModelScope.launch {
             delay(5000)
