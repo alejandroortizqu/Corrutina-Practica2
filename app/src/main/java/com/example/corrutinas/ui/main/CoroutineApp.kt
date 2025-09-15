@@ -38,7 +38,7 @@ fun CoroutineApp(mainViewModel: MainViewModel, modifier : Modifier = Modifier){
             changeColor = !changeColor
         },
             colors = ButtonDefaults.buttonColors(
-                if(changeColor) Color.Blue else Color.Red
+                if(changeColor) Color.Blue else Color.Green
             )
         ){
             Text(text = "Cambio de color")
@@ -48,9 +48,16 @@ fun CoroutineApp(mainViewModel: MainViewModel, modifier : Modifier = Modifier){
         Text(text = mainViewModel.resultState)
         Spacer(modifier = modifier.height(30.dp))
         Button(onClick = {
-            mainViewModel.fetchData()
+            if(mainViewModel.oneCount == false){
+                mainViewModel.contadorDoble()
+            }
         }) {
-            Text(text = "Realiza Consulta")
+            Text(text = "Empezar Contadores")
+        }
+        Button(onClick = {
+                mainViewModel.cancelarContador()
+        }) {
+            Text(text = "Interrumpir Contadores")
         }
 
     }

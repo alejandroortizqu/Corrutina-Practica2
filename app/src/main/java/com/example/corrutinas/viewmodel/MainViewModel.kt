@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -12,27 +13,36 @@ class MainViewModel: ViewModel() {
     var resultState by mutableStateOf("")
     var countTime by mutableStateOf(0)
     private set
+    var oneCount by mutableStateOf(false)
+    var firstCount by mutableStateOf(false)
+    var secondCount by mutableStateOf(false)
 
-    private var oneCount by mutableStateOf(false)
 
-    fun fetchData(){
-
+    fun contadorDoble(){
+        resultState = ""
+        oneCount = true
         val job = viewModelScope.launch {
-
             for(i in 1..5){
                 delay(1000)
                 countTime = i
             }
-            oneCount = true
-        }
+            countTime = 0
+            for(i in 1..5){
+                delay(1000)
+                countTime = i
+            }
 
-        if(oneCount){
-            job.cancel()
-            oneCount = false
         }
         viewModelScope.launch {
-            delay(5000)
-            resultState = "Respuesta Obtenida por la Web"
+            delay(10000)
+            resultState = "Fin de Contadores"
         }
+        oneCount = false
+    }
+    fun cancelarContador() {
+        viewModelScope.coroutineContext.cancelChildren()
+        countTime = 0
+        oneCount = false
+        resultState = "Contador cancelado"
     }
 }
