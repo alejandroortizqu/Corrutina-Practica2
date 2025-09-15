@@ -55,8 +55,11 @@ fun CoroutineApp(mainViewModel: MainViewModel, modifier : Modifier = Modifier){
             Text(text = "Empezar Contadores")
         }
         Button(onClick = {
-                mainViewModel.cancelarContador()
-        }) {
+            mainViewModel.cancelarContador()
+        } ,
+            enabled = mainViewModel.oneCount,
+            colors = ButtonDefaults.buttonColors(Color.Red)
+        ) {
             Text(text = "Interrumpir Contadores")
         }
 

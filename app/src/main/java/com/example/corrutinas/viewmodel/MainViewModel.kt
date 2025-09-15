@@ -14,14 +14,12 @@ class MainViewModel: ViewModel() {
     var countTime by mutableStateOf(0)
     private set
     var oneCount by mutableStateOf(false)
-    var firstCount by mutableStateOf(false)
-    var secondCount by mutableStateOf(false)
 
 
     fun contadorDoble(){
         resultState = ""
         oneCount = true
-        val job = viewModelScope.launch {
+        viewModelScope.launch {
             for(i in 1..5){
                 delay(1000)
                 countTime = i
@@ -31,13 +29,12 @@ class MainViewModel: ViewModel() {
                 delay(1000)
                 countTime = i
             }
-
+            oneCount = false
         }
         viewModelScope.launch {
             delay(10000)
             resultState = "Fin de Contadores"
         }
-        oneCount = false
     }
     fun cancelarContador() {
         viewModelScope.coroutineContext.cancelChildren()
