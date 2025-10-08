@@ -16,30 +16,51 @@ class MainViewModel : ViewModel() {
         private set
     var oneCount by mutableStateOf(false)
 
+
     private var contadorJob: Job? = null
 
-    private suspend fun contadorSimple(tiempo: Int) {
-        for (i in 1..tiempo) {
-            delay(1000)
-            countTime = i
+
+    private fun contadorBloqueante(tiempo: Int, repeticiones: Int) {
+        for (r in 1..repeticiones) {
+            for (i in 1..tiempo) {
+                Thread.sleep(1000) // Congela el hilo principal
+                countTime = i
+            }
         }
     }
 
-    fun contadorDoble() {
-        resultState = ""
+
+    fun iniciarContadorSecuencial(n: Int) {
+        resultState = "Ejecutando bloqueante con $n repeticiones..."
+        countTime = 0
+        contadorBloqueante(5, n)
+        resultState = "Fin bloqueante con $n repeticiones"
+    }
+
+
+
+
+    private suspend fun contadorConcurrente(tiempo: Int, repeticiones: Int) {
+        for(r in 1..repeticiones) {
+            for (i in 1..tiempo) {
+                delay(1000)
+                countTime = i
+            }
+        }
+    }
+
+
+    fun iniciarContadorConcurrente(n: Int) {
+        resultState = "Ejecutando concurrente con $n repeticiones..."
         oneCount = true
         countTime = 0
-
         contadorJob = viewModelScope.launch {
-            contadorSimple(5)
-
-            countTime = 0
-            contadorSimple(5)
-
-            resultState = "Fin de Contadores"
+            contadorConcurrente(5, n)
+            resultState = "Fin concurrente con $n repeticiones"
             oneCount = false
         }
     }
+
 
     fun cancelarContador() {
         viewModelScope.coroutineContext.cancelChildren()

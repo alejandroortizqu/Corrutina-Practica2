@@ -24,6 +24,9 @@ import com.example.corrutinas.ui.theme.CorrutinasTheme
 import com.example.corrutinas.viewmodel.MainViewModel
 
 
+val N = 3
+
+
 @Composable
 fun CoroutineApp(mainViewModel: MainViewModel, modifier : Modifier = Modifier){
     var changeColor by remember {
@@ -43,13 +46,23 @@ fun CoroutineApp(mainViewModel: MainViewModel, modifier : Modifier = Modifier){
         ){
             Text(text = "Cambio de color")
         }
+        Button(onClick = {
+            mainViewModel.iniciarContadorSecuencial(N)
+        } ,
+            enabled = !mainViewModel.oneCount,
+            colors = ButtonDefaults.buttonColors(Color.Red)
+        ) {
+            Text(text = "Contadores Secuenciales")
+        }
+
+
         Spacer(modifier = modifier.height(30.dp))
         Text (text = "${mainViewModel.countTime} [s]")
         Text(text = mainViewModel.resultState)
         Spacer(modifier = modifier.height(30.dp))
         Button(onClick = {
             if(mainViewModel.oneCount == false){
-                mainViewModel.contadorDoble()
+                mainViewModel.iniciarContadorConcurrente(N)
             }
         }) {
             Text(text = "Empezar Contadores")
@@ -63,14 +76,9 @@ fun CoroutineApp(mainViewModel: MainViewModel, modifier : Modifier = Modifier){
             Text(text = "Interrumpir Contadores")
         }
 
+
     }
 }
 
-/*
-@Preview
-@Composable
-fun CoroutineAppPreview( ){
-    CorrutinasTheme{
-        CoroutineApp()
-    }
-}*/
+
+
